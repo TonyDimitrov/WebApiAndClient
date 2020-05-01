@@ -1,0 +1,39 @@
+﻿@using ClientExercise.Models
+
+@model IEnumerable<Car>
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Cars CRUD operations</h1>
+</div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">Car id</th>
+            <th scope="col">Brand</th>
+            <th scope="col">Year of production</th>
+            <th scope="col">Edit</th>
+            <th scope="col">Delete</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var car in Model)
+        {
+            <tr>
+                <td>@car.Id</td>
+                <td>@car.Brand</td>
+                <td>@car.YearOfProduction.ToShortDateString()</td>
+                <td>
+                  <button type="button" data-id="@car.Id" class="btn btn-primary btn-edit">Edit</button>
+                </td>
+                <td>
+                   <button type="button" data-id="@car.Id" class="btn btn-danger btn-delete">Delete</button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

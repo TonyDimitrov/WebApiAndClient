@@ -1,39 +1,42 @@
 ﻿namespace ClientExercise.Controllers
 {
+    using System.Linq;
+    using System.Threading.Tasks;
+
     using ClientExercise.Models;
     using ClientExercise.Service;
     using Microsoft.AspNetCore.Mvc;
-    using Microsoft.AspNetCore.Mvc.Infrastructure;
-    using Microsoft.AspNetCore.Mvc.Routing;
-    using System.Threading.Tasks;
 
     public class CarsController : Controller
     {
         private readonly ICarsService carsService;
-        private readonly IActionContextAccessor actionContext;
 
-        public CarsController(ICarsService carsService, IActionContextAccessor actionContext)
+        public CarsController(ICarsService carsService)
         {
             this.carsService = carsService;
-            this.actionContext = actionContext;
         }
 
         [HttpGet]
         public async Task<IActionResult> All(int? id)
         {
-            var result = await carsService.All(id);
+            var result = await this.carsService.AllAsync(id);
 
             return this.View(result);
         }
 
-        public IActionResult Add(Car car)
+        [HttpPost]
+        public async Task<IActionResult> Add(Car car)
         {
-            return null;
+            await this.carsService.AddAsync(car);
+
+            return this.RedirectToAction(nameof(this.All));
         }
 
-        public IActionResult Edit(Car car)
+        public async Task<IActionResult> Edit(Car car)
         {
-            return null;
+            await this.carsService.EditAsync(car);
+
+            return this.RedirectToAction(nameof(this.All));
         }
 
         [HttpGet]
@@ -42,6 +45,20 @@
             await this.carsService.Delete(id);
 
             return this.Ok();
+        }
+
+        // Json result actions
+        [HttpGet]
+        public async Task<IActionResult> GetById(int id)
+        {
+            var car = (await this.carsService.AllAsync(id)).FirstOrDefault();
+
+            if (car == null)
+            {
+                return this.NotFound();
+            }
+
+            return this.Json(car);
         }
     }
 }

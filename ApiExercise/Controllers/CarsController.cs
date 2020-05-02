@@ -41,7 +41,7 @@
         [HttpPut]
         public async Task<ActionResult> Update(Car car)
         {
-            await this.carService.AddAsync(car);
+            await this.carService.Edit(car);
 
             return this.Ok(204);
         }

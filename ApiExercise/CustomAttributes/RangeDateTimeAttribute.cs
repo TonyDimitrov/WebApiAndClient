@@ -14,7 +14,7 @@
                 return new ValidationResult($"Invalid date {date}");
             }
 
-            if (date.Year == DateTime.Now.Year || date.DayOfYear > DateTime.Now.DayOfYear)
+            if (date.Year == DateTime.Now.Year && date.DayOfYear > DateTime.Now.DayOfYear)
             {
                 return new ValidationResult($"Invalid date {date}");
             }

@@ -1,5 +1,4 @@
-﻿
-namespace ClientExercise.Service
+﻿namespace ClientExercise.Service
 {
     using System.Collections.Generic;
     using System.Threading.Tasks;
@@ -8,11 +7,11 @@ namespace ClientExercise.Service
 
     public interface ICarsService
     {
-        Task<IEnumerable<Car>> All(int? id);
+        Task<IEnumerable<Car>> AllAsync(int? id);
 
         Task AddAsync(Car car);
 
-        Task Edit(Car car);
+        Task EditAsync(Car car);
 
         Task Delete(int id);
     }

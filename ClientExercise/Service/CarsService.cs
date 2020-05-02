@@ -2,8 +2,11 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Net.Http;
+    using System.Net.Http.Headers;
     using System.Text.Json;
     using System.Threading.Tasks;
+    using System.Web.Http;
 
     using ClientExercise.Client;
     using ClientExercise.Models;
@@ -17,7 +20,7 @@
             this.client = client;
         }
 
-        public async Task<IEnumerable<Car>> All(int? id)
+        public async Task<IEnumerable<Car>> AllAsync(int? id)
         {
             var path = string.Format(Constants.Uri, id?.ToString() ?? string.Empty);
 
@@ -30,20 +33,44 @@
             return JsonSerializer.Deserialize<IEnumerable<Car>>(result, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
         }
 
-        public IEnumerable<Car> All(int id)
+        public async Task AddAsync(Car car)
         {
-            throw new System.NotImplementedException();
+            var path = string.Format(Constants.Uri, string.Empty);
+
+            var uri = new Uri(path);
+
+            var content = JsonSerializer.Serialize(car, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
+            var request = new StringContent(content);
+
+            request.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+
+            var response = await this.client.GetClient().PostAsync(uri, request);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new HttpResponseException(response);
+            }
         }
 
-        public Task AddAsync(Car car)
+        public async Task EditAsync(Car car)
         {
-            return null;
-        }
+            var path = string.Format(Constants.Uri, string.Empty);
 
+            var uri = new Uri(path);
 
-        public Task Edit(Car car)
-        {
-            throw new System.NotImplementedException();
+            var content = JsonSerializer.Serialize(car, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
+            var request = new StringContent(content);
+
+            request.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+
+            var response = await this.client.GetClient().PutAsync(uri, request);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new HttpResponseException(response);
+            }
         }
 
         public async Task Delete(int id)

@@ -6,8 +6,44 @@
     ViewData["Title"] = "Home Page";
 }
 
+    <div class="alert alert-danger" role="alert" id="error-div" style="display: none">
+        Could not find car to edit!
+    </div>
+
 <div class="text-center">
     <h1 class="display-4">Cars CRUD operations</h1>
+</div>
+
+<div class="container">
+    <div class="text-center">
+        <!-- Trigger the modal with a button -->
+        <button type="button" class="btn btn-primary m-2" data-toggle="modal" data-target="#add-car-modal">Add Car</button>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="add-car-modal" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-body">
+                    <form asp-area="" asp-controller="cars" asp-action="add" method="post">
+                        <div class="form-group">
+                            <label for="car-brand-add" class="col-form-label">Brand</label>
+                            <input type="text" class="form-control" id="car-brand-add" name="brand">
+                        </div>
+                        <div class="form-group">
+                            <label for="car-year-add" class="col-form-label">Year of production</label>
+                            <input type="date" class="form-control" id="car-year-add" name="yearOfProduction">
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" value="Submit" class="btn btn-default">Add</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
 </div>
 
 <table class="table">
@@ -28,12 +64,43 @@
                 <td>@car.Brand</td>
                 <td>@car.YearOfProduction.ToShortDateString()</td>
                 <td>
-                  <button type="button" data-id="@car.Id" class="btn btn-primary btn-edit">Edit</button>
+                    <button type="button" data-id="@car.Id" class="btn btn-primary btn-edit" data-toggle="modal" data-target="#edit-car-modal">Edit</button>
                 </td>
                 <td>
-                   <button type="button" data-id="@car.Id" class="btn btn-danger btn-delete">Delete</button>
+                    <button type="button" data-id="@car.Id" class="btn btn-danger btn-delete">Delete</button>
                 </td>
             </tr>
         }
     </tbody>
 </table>
+
+<div class="container" id="edit-modal" hidden>
+    <!-- Modal -->
+    <div class="modal fade" id="edit-car-modal" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-body">
+                    <form asp-area="" asp-controller="cars" asp-action="edit" method="post">
+                        <div class="form-group" hidden>
+                            <input type="text" class="form-control" id="car-id-edit" name="id">
+                        </div>
+                        <div class="form-group">
+                            <label for="car-brand-edit" class="col-form-label">Brand</label>
+                            <input type="text" class="form-control" id="car-brand-edit" name="brand">
+                        </div>
+                        <div class="form-group">
+                            <label for="car-year-edit" class="col-form-label">Year of production</label>
+                            <input type="date" class="form-control" id="car-year-edit" name="yearOfProduction">
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" value="Submit" class="btn btn-default">Edit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
